@@ -16,12 +16,7 @@ class Kmeans(val matrix : Array[Point], val clusters : Int, val iterations : Int
     var centers : Array[Point] = this.generateRandomCenters()
     var vector : Array[Int] = new Array[Int](this.matrix.length)
 
-    println(centers.mkString("Array(", ", ", ")"))
-
     for(_ <- 0 to this.iterations) {
-
-      println("Vector: " + vector.mkString("Array(", ", ", ")"))
-      println("Centers: " + centers.mkString("Array(", ", ", ")"))
 
       vector = this.generateClassVector(centers)
       centers = this.getNewCenters(vector)

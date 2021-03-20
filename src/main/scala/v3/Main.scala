@@ -13,7 +13,7 @@ object Main {
 
     for(row <- matrix.indices) points(row) = new Point(matrix(row)(0).toDouble, matrix(row)(1).toDouble)
 
-    val kmeans : Kmeans = new Kmeans(points, 100, 100)
+    val kmeans : Kmeans = new Kmeans(points, 3, 50)
     val vector : (Array[Int], Array[Point]) = kmeans.execute()
 
     val frame : JFrame = new JFrame()
