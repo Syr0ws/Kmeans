@@ -1,15 +1,13 @@
 package v6.views.tabs
 
 import v6.models.Point
+import v6.models.kmeans.KmeansModel
+import v6.views.View
 
 import java.awt.{Color, Graphics, Graphics2D}
 import javax.swing.JPanel
 
-class KmeansView extends JPanel with TabbedView with KmeansObserver {
-
-  private var points : Array[Point] = Array.empty
-  private var centers : Array[Point] = Array.empty
-  private var vector : Array[Int] = Array.empty
+class KmeansView extends JPanel with TabbedView with View[KmeansModel] {
 
   private val colors : Array[Color] = Array(
     Color.BLUE,
@@ -25,6 +23,8 @@ class KmeansView extends JPanel with TabbedView with KmeansObserver {
 
     super.paintComponent(graphics)
 
+    if(this.getModel == null) return
+
     val g2d = graphics.create.asInstanceOf[Graphics2D]
 
     // To set the graphic at the bottom left and corner.
@@ -35,39 +35,39 @@ class KmeansView extends JPanel with TabbedView with KmeansObserver {
     this.drawCentroids(g2d)
   }
 
-  override def update(points: Array[Point], centers: Array[Point], vector: Array[Int]): Unit = {
-    this.points = points
-    this.centers = centers
-    this.vector = vector
-  }
-
   override def display(): Unit = this.repaint()
 
   override def refresh(): Unit = this.repaint()
 
-  override def title: String = "Kmeans Visualization"
+  override def title: String = "Visualization"
 
   private def drawPoints(g2d : Graphics2D) : Unit = {
 
-    for(i <- this.points.indices) {
+    val model : KmeansModel = super.getModel
 
-      val point : Point = this.points(i)
-      val color = if(this.vector(i) < this.colors.length) this.colors(this.vector(i)) else Color.GRAY
+    for(i <- model.getData.indices) {
 
-      g2d.setColor(color)
-      g2d.drawOval((point.x * 100).toInt, (point.y * 100).toInt, 5, 5)
+      val point : Point = model.getData(i)
+      val color = if(model.getVector(i) < this.colors.length) this.colors(model.getVector(i)) else Color.GRAY
+
+      this.drawPoint(g2d, point, color)
     }
   }
 
   private def drawCentroids(g2d : Graphics2D) : Unit = {
 
-    g2d.setColor(Color.BLACK)
+    val model : KmeansModel = super.getModel
 
-    for(i <- this.centers.indices) {
+    for(i <- model.getCenters.indices) {
 
-      val point : Point = this.centers(i)
-
-      g2d.drawOval((point.x * 100).toInt, (point.y * 100).toInt, 5, 5)
+      val point : Point = model.getCenters(i)
+      this.drawPoint(g2d, point, Color.BLACK)
     }
+  }
+
+  private def drawPoint(g2d: Graphics2D, point : Point, color : Color) : Unit = {
+    g2d.setColor(color)
+    g2d.drawOval((point.x * 80).toInt, (point.y * 80).toInt, 5, 5)
+    g2d.fillOval((point.x * 80).toInt, (point.y * 80).toInt, 5, 5)
   }
 }

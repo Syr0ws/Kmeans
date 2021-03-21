@@ -2,6 +2,7 @@ package v6.views
 
 import v6.controllers.ApplicationController
 import v6.models.DataModel
+import v6.models.kmeans.KmeansModel
 
 trait ApplicationView extends View[DataModel] {
 
@@ -13,7 +14,11 @@ trait ApplicationView extends View[DataModel] {
 
   def getVariables : Array[Int]
 
+  def getDisplaySteps : Boolean
+
   def displayError(message : String) : Unit
+
+  def bindKmeansModel(model : KmeansModel) : Unit
 
   def getController : ApplicationController = this.controller
 

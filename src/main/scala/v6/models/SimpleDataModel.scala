@@ -2,7 +2,6 @@ package v6.models
 
 class SimpleDataModel extends DataModel {
 
-  private val algorithm : KmeansAlgorithm = new KmeansAlgorithm
   private var data : Array[Array[Double]] = Array.ofDim(0, 0)
 
   override def getColumns: Int = this.data(0).length
@@ -75,8 +74,6 @@ class SimpleDataModel extends DataModel {
     this.data = array
     this.notifyObservers()
   }
-
-  override def getKmeansAlgorithm: KmeansAlgorithm = this.algorithm
 
   private def readColumn(function : Double => Unit, index : Int): Unit = {
 

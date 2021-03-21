@@ -1,6 +1,7 @@
 package v6.views
 
 import v6.models.DataModel
+import v6.models.kmeans.KmeansModel
 import v6.views.tabs.KmeansView
 import v6.views.tabs.tables.{DataTableView, StatsTableView}
 
@@ -12,9 +13,12 @@ class MainView extends JFrame with ApplicationView {
 
   private val kInput : JTextField = new JTextField(3)
   private val iterationInput : JTextField = new JTextField(3)
+  private val displaySteps : JCheckBox = new JCheckBox()
+
+  private val variableView : VariableSelectorView = new VariableSelectorView
+  private val kmeansView : KmeansView = new KmeansView
 
   private val views : ListBuffer[View[DataModel]] = ListBuffer.empty
-  private var checkBoxes : Array[JCheckBox] = Array.empty
 
   override def display(): Unit = {
 
@@ -30,7 +34,7 @@ class MainView extends JFrame with ApplicationView {
 
     this.views.foreach(view => {
       this.getModel.addObserver(view)
-      view.display()
+      view.setModel(getModel)
     })
 
     this.center(0.5)
@@ -45,43 +49,33 @@ class MainView extends JFrame with ApplicationView {
     this.iterationInput.setText("")
   }
 
+  override def bindKmeansModel(model: KmeansModel): Unit = {
+    model.addObserver(this.kmeansView)
+    this.kmeansView.setModel(model)
+  }
+
   override def getK: String = this.kInput.getText
 
   override def getIterations: String = this.iterationInput.getText
 
-  override def getVariables: Array[Int] = {
+  override def getVariables: Array[Int] = this.variableView.getSelectedBoxes
 
-    val selected : Array[Int] = Array(-1, -1)
-
-    for(i <- this.checkBoxes.indices) {
-
-      if(this.checkBoxes(i).isSelected) {
-
-        if(selected(0) == -1) selected(0) = i
-        else if(selected(1) == -1) selected(1) = i
-        else return Array.empty
-      }
-    }
-    selected
-  }
+  override def getDisplaySteps: Boolean = this.displaySteps.isSelected
 
   override def displayError(message: String): Unit = JOptionPane.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE)
 
-  override def getModel: DataModel = super.getModel
-
   private def buildTopPanel() : JPanel = {
 
-    val panel : JPanel = new JPanel()
-
-    this.checkBoxes = this.buildCheckBoxList()
-    this.checkBoxes.foreach(box => panel.add(box))
-
-    panel
+    this.views.addOne(this.variableView)
+    this.variableView
   }
 
   private def buildBottomPanel() : JPanel = {
 
     val panel : JPanel = new JPanel()
+
+    panel.add(this.displaySteps)
+    panel.add(new JLabel("Afficher les étapes"))
 
     panel.add(new JLabel("K:"))
     panel.add(this.kInput)
@@ -98,33 +92,20 @@ class MainView extends JFrame with ApplicationView {
 
     val pane : JTabbedPane = new JTabbedPane()
 
-    val kmeansView = new KmeansView
     val dataView = new DataTableView
     val statsView = new StatsTableView
 
     dataView.setModel(this.getModel)
     statsView.setModel(this.getModel)
-    kmeansView.setModel(getModel.getKmeansAlgorithm)
-    getModel.getKmeansAlgorithm.setView(kmeansView) // TODO To change.
 
     this.views.addOne(dataView)
     this.views.addOne(statsView)
 
-    pane.addTab(kmeansView.title, kmeansView)
+    pane.addTab(this.kmeansView.title, this.kmeansView)
     pane.addTab(dataView.title, dataView)
     pane.addTab(statsView.title, statsView)
 
     pane
-  }
-
-  private def buildCheckBoxList() : Array[JCheckBox] = {
-
-    val columns : Int = this.getModel.getColumns
-    val array : Array[JCheckBox] = Array.ofDim(columns)
-
-    for(i <- array.indices) array(i) = new JCheckBox(s"x$i")
-
-    array
   }
 
   private def getExecuteButton : JButton = {

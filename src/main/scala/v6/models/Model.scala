@@ -17,4 +17,6 @@ trait Model {
   }
 
   def notifyObservers(): Unit = this.observers.foreach(obs => obs.refresh())
+
+  def getObservers : ListBuffer[View[_ <: Model]] = this.observers
 }

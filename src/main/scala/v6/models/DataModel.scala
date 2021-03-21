@@ -23,6 +23,4 @@ trait DataModel extends Model {
   def getData: Array[Array[Double]]
 
   def setData(array : Array[Array[Double]])
-
-  def getKmeansAlgorithm : KmeansAlgorithm
 }
