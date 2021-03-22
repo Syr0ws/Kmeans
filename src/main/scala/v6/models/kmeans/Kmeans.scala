@@ -24,8 +24,6 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
     this.vector = this.generateClassVector(this.centers)
     this.centers = this.getNewCenters(this.vector)
 
-    println("###############")
-
     this.notifyObservers()
 
     this.iteration += 1
