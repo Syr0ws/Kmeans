@@ -24,6 +24,8 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
     this.vector = this.generateClassVector(this.centers)
     this.centers = this.getNewCenters(this.vector)
 
+    println("###############")
+
     this.notifyObservers()
 
     this.iteration += 1
@@ -65,6 +67,8 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
 
       val center = centers(index) // Getting the center point according to its index.
 
+      if(center.equals(point)) return index // TODO
+
       // Calculating euclidean distances.
       val distance1 : Double = centers(centerIndex).euclideanDistance(point)
       val distance2 : Double = center.euclideanDistance(point)
@@ -98,6 +102,8 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
       var x : Double = 0
       var y : Double = 0
       var count : Int = 0
+
+      // Problem : 0/0
 
       for(i <- this.data.indices) {
 
