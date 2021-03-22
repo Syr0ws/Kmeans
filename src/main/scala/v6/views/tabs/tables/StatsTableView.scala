@@ -11,7 +11,7 @@ class StatsTableView extends TableView {
 
     header(0) = ""
 
-    for(column <- 1 to columns) header(column) = s"x$column"
+    for(column <- 1 to columns) header(column) = s"x${column - 1}"
 
     header
   }

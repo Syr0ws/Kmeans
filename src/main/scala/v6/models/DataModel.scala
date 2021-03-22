@@ -8,15 +8,19 @@ trait DataModel extends Model {
 
   def standardDeviation(column : Int) : Double
 
+  def correlation(v1 : Int, v2 : Int) : Double
+
   def averages() : Array[Double]
 
   def variances() : Array[Double]
 
   def standardDeviations() : Array[Double]
 
-  def count() : Int
+  def correlations() : Array[Array[Double]]
 
   def toPointArray(v1 : Int, v2 : Int) : Array[Point]
+
+  def count() : Int
 
   def getColumns: Int
 

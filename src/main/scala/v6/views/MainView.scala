@@ -3,7 +3,7 @@ package v6.views
 import v6.models.DataModel
 import v6.models.kmeans.KmeansModel
 import v6.views.tabs.KmeansView
-import v6.views.tabs.tables.{DataTableView, StatsTableView}
+import v6.views.tabs.tables.{CorrelationTableView, DataTableView, StatsTableView}
 
 import java.awt.{BorderLayout, Toolkit}
 import javax.swing._
@@ -83,7 +83,7 @@ class MainView extends JFrame with ApplicationView {
     panel.add(new JLabel("Itérations:"))
     panel.add(this.iterationInput)
 
-    panel.add(this.getExecuteButton, BorderLayout.LINE_END)
+    panel.add(this.getExecuteButton)
 
     panel
   }
@@ -94,16 +94,16 @@ class MainView extends JFrame with ApplicationView {
 
     val dataView = new DataTableView
     val statsView = new StatsTableView
-
-    dataView.setModel(this.getModel)
-    statsView.setModel(this.getModel)
+    val correlationView = new CorrelationTableView
 
     this.views.addOne(dataView)
     this.views.addOne(statsView)
+    this.views.addOne(correlationView)
 
     pane.addTab(this.kmeansView.title, this.kmeansView)
     pane.addTab(dataView.title, dataView)
     pane.addTab(statsView.title, statsView)
+    pane.addTab(correlationView.title, correlationView)
 
     pane
   }
