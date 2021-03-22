@@ -1,11 +1,12 @@
 package v6.controllers
 
-import v6.models.{DataModel, Point}
 import v6.models.kmeans.Kmeans
-
-import java.util.{Timer, TimerTask}
+import v6.models.{DataModel, Point}
+import v6.utils.Task
 
 class MainController extends ApplicationController {
+
+  private var task : Task = _
 
   override def executeKmeans(): Unit = {
 
@@ -30,24 +31,23 @@ class MainController extends ApplicationController {
     val data : Array[Point] = model.toPointArray(variables(0), variables(1))
     val kmeans : Kmeans = new Kmeans(data, k, iterations)
 
+    // Binding the view with the kmeans model.
     this.getView.bindKmeansModel(kmeans)
 
-    if(this.getView.getDisplaySteps) this.executeKmeansTask(kmeans)
-    else while(kmeans.hasNext) kmeans.next()
-  }
+    // If a task is already running, cancelling it.
+    if(this.task != null && this.task.isRunning) this.task.cancel()
 
-  private def executeKmeansTask(kmeans : Kmeans) : Unit = {
+    if(this.getView.getDisplaySteps) {
 
-    val timer = new Timer()
-    val task = new TimerTask {
+      // Running the algorithm step by step in a task.
+      this.task = new Task(kmeans) // Storing the task to use it later.
+      this.task.start()
 
-      override def run(): Unit = {
+    } else {
 
-        if(!kmeans.hasNext) this.cancel()
-        else kmeans.next()
-      }
+      // Running all the algorithm.
+      while(kmeans.hasNext) kmeans.next()
     }
-    timer.schedule(task, 0L, 1000L)
   }
 
   private def getK: Int = {
