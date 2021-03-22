@@ -1,6 +1,6 @@
-package v6.models
+package fr.syrows.models
 
-import v6.views.View
+import fr.syrows.views.View
 
 import scala.collection.mutable.ListBuffer
 

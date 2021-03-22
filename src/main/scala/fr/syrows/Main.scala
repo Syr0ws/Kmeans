@@ -1,9 +1,9 @@
-package v6
+package fr.syrows
 
-import v6.controllers.{ApplicationController, MainController}
-import v6.models.{DataModel, SimpleDataModel}
-import v6.utils.{DataParser, FileUtils}
-import v6.views.{ApplicationView, MainView}
+import fr.syrows.controllers.{ApplicationController, MainController}
+import fr.syrows.models.{DataModel, SimpleDataModel}
+import fr.syrows.utils.{DataParser, FileUtils}
+import fr.syrows.views.{ApplicationView, MainView}
 
 object Main {
 

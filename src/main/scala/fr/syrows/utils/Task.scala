@@ -1,6 +1,6 @@
-package v6.utils
+package fr.syrows.utils
 
-import v6.models.kmeans.Kmeans
+import fr.syrows.models.kmeans.Kmeans
 
 import java.util.{Timer, TimerTask}
 

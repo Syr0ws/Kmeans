@@ -1,8 +1,8 @@
-package v6.views.tabs
+package fr.syrows.views.tabs
 
-import v6.models.Point
-import v6.models.kmeans.KmeansModel
-import v6.views.View
+import fr.syrows.models.Point
+import fr.syrows.models.kmeans.KmeansModel
+import fr.syrows.views.View
 
 import java.awt.{Color, Graphics, Graphics2D}
 import javax.swing.JPanel
@@ -58,9 +58,9 @@ class KmeansView extends JPanel with TabbedView with View[KmeansModel] {
 
     val model : KmeansModel = super.getModel
 
-    for(i <- model.getCenters.indices) {
+    for(i <- model.getCentroids.indices) {
 
-      val point : Point = model.getCenters(i)
+      val point : Point = model.getCentroids(i)
       this.drawPoint(g2d, point, Color.BLACK)
     }
   }

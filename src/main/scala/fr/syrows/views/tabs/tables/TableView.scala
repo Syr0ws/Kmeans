@@ -1,13 +1,13 @@
-package v6.views.tabs.tables
+package fr.syrows.views.tabs.tables
 
-import v6.models.DataModel
-import v6.views
-import v6.views.tabs.TabbedView
+import fr.syrows.models.DataModel
+import fr.syrows.views.View
+import fr.syrows.views.tabs.TabbedView
 
 import javax.swing.table.DefaultTableModel
 import javax.swing.{JScrollPane, JTable}
 
-abstract class TableView extends JScrollPane with views.View[DataModel] with TabbedView {
+abstract class TableView extends JScrollPane with View[DataModel] with TabbedView {
 
   private val table : JTable = new JTable()
 

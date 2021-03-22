@@ -1,6 +1,6 @@
-package v6.views
+package fr.syrows.views
 
-import v6.models.DataModel
+import fr.syrows.models.DataModel
 
 import javax.swing.{JCheckBox, JPanel}
 import scala.collection.mutable.ListBuffer

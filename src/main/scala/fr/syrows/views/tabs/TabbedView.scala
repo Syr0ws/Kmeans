@@ -1,4 +1,4 @@
-package v6.views.tabs
+package fr.syrows.views.tabs
 
 trait TabbedView {
 

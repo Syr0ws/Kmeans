@@ -1,4 +1,4 @@
-package v6.models
+package fr.syrows.models
 
 class Point(val x : Double, val y : Double) {
 

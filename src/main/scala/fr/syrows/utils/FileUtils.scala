@@ -1,4 +1,4 @@
-package v6.utils
+package fr.syrows.utils
 
 import java.io.File
 import scala.io.{BufferedSource, Source}

@@ -1,7 +1,7 @@
-package v6.controllers
+package fr.syrows.controllers
 
-import v6.models.{DataModel, SimpleDataModel}
-import v6.views.ApplicationView
+import fr.syrows.models.DataModel
+import fr.syrows.views.ApplicationView
 
 trait ApplicationController {
 

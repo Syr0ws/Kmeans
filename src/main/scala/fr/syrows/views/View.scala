@@ -1,6 +1,6 @@
-package v6.views
+package fr.syrows.views
 
-import v6.models.Model
+import fr.syrows.models.Model
 
 trait View[A <: Model] {
 

@@ -1,9 +1,9 @@
-package v6.views
+package fr.syrows.views
 
-import v6.models.DataModel
-import v6.models.kmeans.KmeansModel
-import v6.views.tabs.KmeansView
-import v6.views.tabs.tables.{CorrelationTableView, DataTableView, StatsTableView}
+import fr.syrows.models.DataModel
+import fr.syrows.models.kmeans.KmeansModel
+import fr.syrows.views.tabs.KmeansView
+import fr.syrows.views.tabs.tables.{CorrelationTableView, DataTableView, StatsTableView}
 
 import java.awt.{BorderLayout, Toolkit}
 import javax.swing._

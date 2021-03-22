@@ -1,4 +1,4 @@
-package v6.utils
+package fr.syrows.utils
 
 object DataParser {
 

@@ -1,8 +1,8 @@
-package v6.views
+package fr.syrows.views
 
-import v6.controllers.ApplicationController
-import v6.models.DataModel
-import v6.models.kmeans.KmeansModel
+import fr.syrows.controllers.ApplicationController
+import fr.syrows.models.DataModel
+import fr.syrows.models.kmeans.KmeansModel
 
 trait ApplicationView extends View[DataModel] {
 

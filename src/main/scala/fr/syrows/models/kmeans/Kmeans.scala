@@ -1,6 +1,6 @@
-package v6.models.kmeans
+package fr.syrows.models.kmeans
 
-import v6.models.Point
+import fr.syrows.models.Point
 
 import scala.util.Random
 
@@ -13,7 +13,7 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
 
   private val RANDOM : Random = new Random
 
-  private var centers : Array[Point] = this.generateRandomCenters()
+  private var centers : Array[Point] = this.generateRandomCentroids()
   private var vector : Array[Int] = new Array[Int](this.data.length)
   private var iteration : Int = 0
 
@@ -33,11 +33,17 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
 
   override def getData: Array[Point] = this.data
 
-  override def getCenters: Array[Point] = this.centers
+  override def getCentroids: Array[Point] = this.centers
 
   override def getVector: Array[Int] = this.vector
 
-  private def generateRandomCenters() : Array[Point] = {
+  /**
+   * Generate random centroids which are random points of the data. This function
+   * ensure that two centers cannot be the sames.
+   *
+   * @return an array of Point.
+   */
+  private def generateRandomCentroids() : Array[Point] = {
 
     val centers : Array[Point] = new Array[Point](this.clusters)
 
@@ -57,7 +63,15 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
     centers
   }
 
-  private def getCenterClass(centers : Array[Point], point : Point) : Int = {
+  /**
+   * Get the class of a point belongs to based on the euclidean distance between centers.
+   *
+   * @param centers an array of Point that corresponds to the current centers.
+   * @param point an object of type Point to search the class of.
+   *
+   * @return the index of the center the point is the nearest.
+   */
+  private def getPointClass(centers : Array[Point], point : Point) : Int = {
 
     var centerIndex : Int = 0
 
@@ -65,7 +79,7 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
 
       val center = centers(index) // Getting the center point according to its index.
 
-      if(center.equals(point)) return index // TODO
+      if(center.equals(point)) return index // Do not change the center
 
       // Calculating euclidean distances.
       val distance1 : Double = centers(centerIndex).euclideanDistance(point)
@@ -77,6 +91,12 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
     centerIndex
   }
 
+  /**
+   * Generate a vector that contains the classes of which each point belongs to.
+   *
+   * @param centers an array of Point that corresponds to the current centers.
+   * @return an array of Integers.
+   */
   private def generateClassVector(centers : Array[Point]) : Array[Int] = {
 
     val vector : Array[Int] = new Array[Int](this.data.length)
@@ -84,12 +104,19 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
     for(i <- this.data.indices) {
 
       // Getting the class of the point.
-      val centerClass : Int = this.getCenterClass(centers, this.data(i))
+      // A class is represented by the index of the nearest center of the point.
+      val centerClass : Int = this.getPointClass(centers, this.data(i))
       vector(i) = centerClass
     }
     vector
   }
 
+  /**
+   * Find new centers of each cluster.
+   *
+   * @param vector an array of Integers that contains the classes of which each point belongs to.
+   * @return an array of Point which contains the new centers of each cluster.
+   */
   private def getNewCenters(vector : Array[Int]) : Array[Point] = {
 
     val centers : Array[Point] = new Array[Point](this.clusters)
@@ -100,8 +127,6 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
       var x : Double = 0
       var y : Double = 0
       var count : Int = 0
-
-      // Problem : 0/0
 
       for(i <- this.data.indices) {
 

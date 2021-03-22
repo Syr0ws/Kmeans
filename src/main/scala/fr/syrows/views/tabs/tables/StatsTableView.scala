@@ -1,6 +1,6 @@
-package v6.views.tabs.tables
+package fr.syrows.views.tabs.tables
 
-import v6.models.DataModel
+import fr.syrows.models.DataModel
 
 class StatsTableView extends TableView {
 

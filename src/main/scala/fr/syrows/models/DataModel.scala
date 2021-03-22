@@ -1,4 +1,4 @@
-package v6.models
+package fr.syrows.models
 
 trait DataModel extends Model {
 

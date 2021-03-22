@@ -1,8 +1,8 @@
-package v6.controllers
+package fr.syrows.controllers
 
-import v6.models.kmeans.Kmeans
-import v6.models.{DataModel, Point}
-import v6.utils.Task
+import fr.syrows.models.kmeans.Kmeans
+import fr.syrows.models.{DataModel, Point}
+import fr.syrows.utils.Task
 
 class MainController extends ApplicationController {
 
