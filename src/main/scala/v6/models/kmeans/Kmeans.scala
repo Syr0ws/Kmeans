@@ -31,6 +31,12 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
 
   override def hasNext: Boolean = this.iteration < this.iterations
 
+  override def getData: Array[Point] = this.data
+
+  override def getCenters: Array[Point] = this.centers
+
+  override def getVector: Array[Int] = this.vector
+
   private def generateRandomCenters() : Array[Point] = {
 
     val centers : Array[Point] = new Array[Point](this.clusters)
@@ -110,10 +116,4 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
     }
     centers
   }
-
-  override def getData: Array[Point] = this.data
-
-  override def getCenters: Array[Point] = this.centers
-
-  override def getVector: Array[Int] = this.vector
 }
