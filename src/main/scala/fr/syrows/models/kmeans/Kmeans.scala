@@ -13,7 +13,7 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
 
   private val RANDOM : Random = new Random
 
-  private var centers : Array[Point] = this.generateRandomCentroids()
+  private var centroids : Array[Point] = _
   private var vector : Array[Int] = new Array[Int](this.data.length)
   private var iteration : Int = 0
 
@@ -21,8 +21,8 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
 
     if(!this.hasNext) return
 
-    this.vector = this.generateClassVector(this.centers)
-    this.centers = this.getNewCenters(this.vector)
+    this.centroids = if(this.centroids == null) this.generateRandomCentroids() else this.getNewCentroids(this.vector)
+    this.vector = this.generateClassVector(this.centroids)
 
     this.notifyObservers()
 
@@ -33,13 +33,13 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
 
   override def getData: Array[Point] = this.data
 
-  override def getCentroids: Array[Point] = this.centers
+  override def getCentroids: Array[Point] = this.centroids
 
   override def getVector: Array[Int] = this.vector
 
   /**
    * Generate random centroids which are random points of the data. This function
-   * ensure that two centers cannot be the sames.
+   * ensure that two centroids cannot be the sames.
    *
    * @return an array of Point.
    */
@@ -64,25 +64,25 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
   }
 
   /**
-   * Get the class of a point belongs to based on the euclidean distance between centers.
+   * Get the class of a point belongs to based on the euclidean distance between centroids.
    *
-   * @param centers an array of Point that corresponds to the current centers.
+   * @param centroids an array of Point that corresponds to the current centroids.
    * @param point an object of type Point to search the class of.
    *
    * @return the index of the center the point is the nearest.
    */
-  private def getPointClass(centers : Array[Point], point : Point) : Int = {
+  private def getPointClass(centroids : Array[Point], point : Point) : Int = {
 
     var centerIndex : Int = 0
 
-    for(index <- 1 until centers.length) {
+    for(index <- 1 until centroids.length) {
 
-      val center = centers(index) // Getting the center point according to its index.
+      val center = centroids(index) // Getting the center point according to its index.
 
       if(center.equals(point)) return index // Do not change the center
 
       // Calculating euclidean distances.
-      val distance1 : Double = centers(centerIndex).euclideanDistance(point)
+      val distance1 : Double = centroids(centerIndex).euclideanDistance(point)
       val distance2 : Double = center.euclideanDistance(point)
 
       // If the new distance is lower than the stored one, changing center.
@@ -94,10 +94,10 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
   /**
    * Generate a vector that contains the classes of which each point belongs to.
    *
-   * @param centers an array of Point that corresponds to the current centers.
+   * @param centroids an array of Point that corresponds to the current centroids.
    * @return an array of Integers.
    */
-  private def generateClassVector(centers : Array[Point]) : Array[Int] = {
+  private def generateClassVector(centroids : Array[Point]) : Array[Int] = {
 
     val vector : Array[Int] = new Array[Int](this.data.length)
 
@@ -105,19 +105,19 @@ class Kmeans(val data : Array[Point], val clusters : Int, val iterations : Int) 
 
       // Getting the class of the point.
       // A class is represented by the index of the nearest center of the point.
-      val centerClass : Int = this.getPointClass(centers, this.data(i))
+      val centerClass : Int = this.getPointClass(centroids, this.data(i))
       vector(i) = centerClass
     }
     vector
   }
 
   /**
-   * Find new centers of each cluster.
+   * Find new centroids of each cluster.
    *
    * @param vector an array of Integers that contains the classes of which each point belongs to.
-   * @return an array of Point which contains the new centers of each cluster.
+   * @return an array of Point which contains the new centroids of each cluster.
    */
-  private def getNewCenters(vector : Array[Int]) : Array[Point] = {
+  private def getNewCentroids(vector : Array[Int]) : Array[Point] = {
 
     val centers : Array[Point] = new Array[Point](this.clusters)
 
